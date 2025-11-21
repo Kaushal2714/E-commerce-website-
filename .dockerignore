@@ -1,0 +1,15 @@
+*.pyc
+__pycache__/
+db.sqlite3
+.env
+*.log
+.git
+.gitignore
+staticfiles_build/
+staticfiles/
+README.md
+DEPLOYMENT_GUIDE.md
+STATIC_FILES_FIX.md
+RAILWAY_DEPLOYMENT_STEPS.md
+.vscode/
+.idea/
