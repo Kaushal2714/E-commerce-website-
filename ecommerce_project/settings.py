@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-p)iw#a#q6$vcsdiyc$^deu=&s+fxu7ese8&okg=t(4t#jd(hf5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.railway.app', '.vercel.app', '.now.sh', '127.0.0.1', 'localhost', '*']
+ALLOWED_HOSTS = ['.railway.app', '.vercel.app', '.now.sh', '127.0.0.1', 'localhost', 'e-commerce-website-production-0209.up.railway.app' , '*']
 
 
 # Application definition
