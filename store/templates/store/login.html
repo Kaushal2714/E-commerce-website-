@@ -1,0 +1,37 @@
+{% extends 'store/base.html' %}
+{% block title %}Login - TrendMart{% endblock %}
+{% block extra_css %}
+<style>
+.auth-container{max-width:500px;margin:3rem auto;background:white;border-radius:20px;padding:3rem;box-shadow:0 10px 40px rgba(0,0,0,0.1)}
+.auth-title{font-size:2.5rem;text-align:center;margin-bottom:2rem;background:linear-gradient(135deg,#ff9a56 0%,#ff6b35 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.form-group{margin-bottom:1.5rem}
+.form-label{display:block;margin-bottom:0.5rem;font-weight:600;color:#333}
+.form-control{width:100%;padding:1rem;border:2px solid #e5e7eb;border-radius:10px;font-size:1rem;transition:border-color 0.3s}
+.form-control:focus{outline:none;border-color:#ff6b35}
+.btn-submit{width:100%;padding:1.2rem;background:linear-gradient(135deg,#ff9a56 0%,#ff6b35 100%);color:white;border:none;border-radius:12px;font-size:1.1rem;font-weight:600;cursor:pointer;transition:all 0.3s;margin-top:1rem}
+.btn-submit:hover{transform:translateY(-3px);box-shadow:0 10px 25px rgba(255,107,53,0.4)}
+.auth-link{text-align:center;margin-top:1.5rem;color:#666}
+.auth-link a{color:#ff6b35;text-decoration:none;font-weight:600}
+.auth-link a:hover{text-decoration:underline}
+</style>
+{% endblock %}
+{% block content %}
+<div class="auth-container">
+<h2 class="auth-title">Welcome Back</h2>
+<form method="post">
+{% csrf_token %}
+<div class="form-group">
+<label class="form-label">Username</label>
+<input type="text" name="username" class="form-control" required>
+</div>
+<div class="form-group">
+<label class="form-label">Password</label>
+<input type="password" name="password" class="form-control" required>
+</div>
+<button type="submit" class="btn-submit">Login</button>
+</form>
+<div class="auth-link">
+Don't have an account? <a href="{% url 'register' %}">Register here</a>
+</div>
+</div>
+{% endblock %}

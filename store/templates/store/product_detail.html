@@ -1,0 +1,229 @@
+{% extends 'store/base.html' %}
+
+{% block title %}{{ product.name }} - TrendMart{% endblock %}
+
+{% block extra_css %}
+<style>
+    .product-detail {
+        background: white;
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+    
+    .product-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+        align-items: start;
+    }
+    
+    .product-image-container {
+        position: sticky;
+        top: 100px;
+    }
+    
+    .product-image-large {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    
+    .product-details {
+        padding: 1rem;
+    }
+    
+    .breadcrumb {
+        color: #666;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+        color: #ff6b35;
+        text-decoration: none;
+    }
+    
+    .product-title {
+        font-size: 2.5rem;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+    
+    .product-price-large {
+        font-size: 3rem;
+        font-weight: bold;
+        background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 1.5rem 0;
+    }
+    
+    .product-meta {
+        display: flex;
+        gap: 2rem;
+        margin: 2rem 0;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+    }
+    
+    .meta-item {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .meta-label {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 0.3rem;
+    }
+    
+    .meta-value {
+        font-weight: 600;
+        color: #333;
+        font-size: 1.1rem;
+    }
+    
+    .product-description-full {
+        color: #555;
+        line-height: 1.8;
+        font-size: 1.1rem;
+        margin: 2rem 0;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        margin-top: 2rem;
+    }
+    
+    .btn-large {
+        padding: 1.2rem 2rem;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+        text-align: center;
+        flex: 1;
+    }
+    
+    .btn-add-cart {
+        background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%);
+        color: white;
+    }
+    
+    .btn-add-cart:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
+    }
+    
+    .btn-back {
+        background: white;
+        color: #ff6b35;
+        border: 2px solid #ff6b35;
+    }
+    
+    .btn-back:hover {
+        background: #ff6b35;
+        color: white;
+    }
+    
+    .stock-info {
+        padding: 1rem;
+        border-radius: 10px;
+        margin: 1.5rem 0;
+        font-weight: 600;
+    }
+    
+    .stock-available {
+        background: #d1fae5;
+        color: #065f46;
+    }
+    
+    .stock-low {
+        background: #fed7aa;
+        color: #92400e;
+    }
+    
+    @media (max-width: 968px) {
+        .product-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .product-image-container {
+            position: relative;
+            top: 0;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="product-detail">
+    <div class="breadcrumb">
+        <a href="{% url 'product_list' %}">Home</a> / 
+        <a href="{% url 'category_products' product.category.slug %}">{{ product.category.name }}</a> / 
+        {{ product.name }}
+    </div>
+    
+    <div class="product-container">
+        <div class="product-image-container">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image-large">
+        </div>
+        
+        <div class="product-details">
+            <h1 class="product-title">{{ product.name }}</h1>
+            
+            <div class="product-price-large">${{ product.price }}</div>
+            
+            <div class="product-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Category</span>
+                    <span class="meta-value">{{ product.category.name }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Availability</span>
+                    <span class="meta-value">{% if product.available %}In Stock{% else %}Out of Stock{% endif %}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Stock</span>
+                    <span class="meta-value">{{ product.stock }} units</span>
+                </div>
+            </div>
+            
+            <div class="stock-info {% if product.stock > 10 %}stock-available{% else %}stock-low{% endif %}">
+                {% if product.stock > 10 %}
+                    ✓ In Stock - Ready to ship
+                {% else %}
+                    ⚠ Only {{ product.stock }} items left - Order soon!
+                {% endif %}
+            </div>
+            
+            <div class="product-description-full">
+                <h3>Product Description</h3>
+                <p>{{ product.description }}</p>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="{% url 'product_list' %}" class="btn-large btn-back">← Back to Shop</a>
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'add_to_cart' product.id %}" style="flex: 1;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-large btn-add-cart" style="width: 100%;">
+                        🛒 Add to Cart
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'login' %}" class="btn-large btn-add-cart">Login to Purchase</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
