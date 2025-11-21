@@ -122,7 +122,13 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-MEDIA_URL = '/media/'
+# In production, media files are copied to static and served from there
+# In development, they're served from the media directory
+if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('VERCEL'):
+    MEDIA_URL = '/static/media/'
+else:
+    MEDIA_URL = '/media/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
