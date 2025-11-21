@@ -27,7 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['.railway.app', '.vercel.app', '.now.sh', '127.0.0.1', 'localhost', 'e-commerce-website-production-0209.up.railway.app' , '*']
 
-
+CSRF_TRUSTED_ORIGINS = [
+    'https://e-commerce-website-production-0209.up.railway.app'
+]
 # Application definition
 
 INSTALLED_APPS = [
