@@ -15,12 +15,15 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy project files
 COPY . .
 
-# Collect static files and copy media files
-RUN python manage.py collectstatic --noinput && \
-    python manage.py copy_media_to_static
+# Make start script executable
+RUN chmod +x start.sh
+
+# Set environment variables
+ENV PYTHONUNBUFFERED=1
+ENV PORT=8000
 
 # Expose port
-EXPOSE 8000
+EXPOSE $PORT
 
-# Run migrations and start server
-CMD python manage.py migrate && gunicorn ecommerce_project.wsgi:application --bind 0.0.0.0:$PORT
+# Run startup script
+CMD ["./start.sh"]
