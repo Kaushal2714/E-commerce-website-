@@ -1,78 +1,110 @@
-# Django E-Commerce Project
+# E-Commerce Django Project
 
-A complete e-commerce web application built with Django.
+A simple e-commerce website built with Django.
 
 ## Features
 
 - Product catalog with categories
 - Shopping cart functionality
-- Order management system
 - User authentication
-- Admin panel for managing products, orders, and categories
+- Order management
+- Admin panel for managing products
 
-## Setup Instructions
+## Requirements
 
-### 1. Create a superuser (admin account)
+- Python 3.12+
+- Django 5.2.5
+- Pillow (for image handling)
+
+## Installation
+
+1. **Clone the repository**
 ```bash
-python manage.py createsuperuser
+git clone <your-repo-url>
+cd ecommerce_project
 ```
-Follow the prompts to create your admin account.
 
-### 2. Run the development server
+2. **Install dependencies**
+```bash
+pip install -r requirements.txt
+```
+
+3. **Run migrations**
+```bash
+python manage.py migrate
+```
+
+4. **Create admin user**
+```bash
+python manage.py create_admin
+```
+This will create an admin user with:
+- Username: `admin`
+- Password: `admin123`
+
+5. **Populate products (optional)**
+```bash
+python manage.py populate_products
+```
+
+6. **Run the development server**
 ```bash
 python manage.py runserver
 ```
 
-### 3. Access the application
-- Main store: http://127.0.0.1:8000/
-- Admin panel: http://127.0.0.1:8000/admin/
-
-## Usage
-
-### Admin Panel
-1. Login to the admin panel at `/admin/`
-2. Add categories (e.g., Electronics, Clothing, Books)
-3. Add products with details like name, price, description, stock, and category
-
-### Customer Features
-1. Browse products on the homepage
-2. Filter products by category
-3. View product details
-4. Add products to cart (requires login)
-5. Update cart quantities
-6. Checkout and place orders
-7. View order history
-
-## Models
-
-- **Category**: Product categories
-- **Product**: Product information (name, price, description, stock, image)
-- **Cart**: Shopping cart for each user
-- **CartItem**: Items in the cart
-- **Order**: Customer orders
-- **OrderItem**: Items in each order
+7. **Access the application**
+- Website: http://127.0.0.1:8000/
+- Admin Panel: http://127.0.0.1:8000/admin/
 
 ## Project Structure
 
 ```
 ecommerce_project/
-├── ecommerce_project/     # Project settings
-│   ├── settings.py
-│   ├── urls.py
-│   └── ...
-├── store/                 # Main app
+├── ecommerce_project/     # Main project settings
+│   ├── settings.py        # Django settings
+│   ├── urls.py           # URL configuration
+│   └── wsgi.py           # WSGI configuration
+├── store/                # Store app
 │   ├── models.py         # Database models
 │   ├── views.py          # View functions
-│   ├── urls.py           # URL routing
+│   ├── urls.py           # App URLs
 │   ├── admin.py          # Admin configuration
-│   └── templates/        # HTML templates
-├── media/                # Uploaded images
-└── manage.py
+│   ├── forms.py          # Forms
+│   ├── templates/        # HTML templates
+│   └── management/       # Custom management commands
+├── media/                # User uploaded files
+│   └── products/         # Product images
+├── staticfiles/          # Collected static files
+├── manage.py             # Django management script
+└── requirements.txt      # Python dependencies
 ```
 
-## Next Steps
+## Admin Credentials
 
-1. Create a superuser account
-2. Add some categories and products via admin panel
-3. Test the shopping flow
-4. Customize the templates and styling as needed
+**Username:** admin  
+**Password:** admin123
+
+*Note: Change this password in production!*
+
+## Management Commands
+
+- `python manage.py create_admin` - Create/reset admin user
+- `python manage.py populate_products` - Populate database with sample products
+- `python manage.py collectstatic` - Collect static files
+
+## Development
+
+To make changes:
+
+1. Edit the code
+2. Run migrations if you changed models:
+   ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
+3. Test your changes locally
+4. Commit and push to Git
+
+## License
+
+This project is for educational purposes.

@@ -25,11 +25,7 @@ SECRET_KEY = 'django-insecure-p)iw#a#q6$vcsdiyc$^deu=&s+fxu7ese8&okg=t(4t#jd(hf5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.railway.app', '.vercel.app', '.now.sh', '127.0.0.1', 'localhost', 'e-commerce-website-production-0209.up.railway.app' , '*']
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://e-commerce-website-production-0209.up.railway.app'
-]
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,14 +34,12 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'store',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -122,16 +116,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# In production, media files are copied to static and served from there
-# In development, they're served from the media directory
-if os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('VERCEL'):
-    MEDIA_URL = '/static/media/'
-else:
-    MEDIA_URL = '/media/'
-
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Default primary key field type
