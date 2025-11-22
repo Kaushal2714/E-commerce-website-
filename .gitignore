@@ -1,6 +1,10 @@
 *.pyc
 __pycache__/
 db.sqlite3
+staticfiles/
 staticfiles_build/
 .env
 *.log
+.DS_Store
+.vscode/
+.idea/
