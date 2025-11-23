@@ -25,11 +25,15 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-p)iw#a#q6$vcsdiyc$^de
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-
-# Allow all hosts if ALLOWED_HOSTS is set to '*'
-if '*' in ALLOWED_HOSTS:
-    ALLOWED_HOSTS = ['*']
+# ALLOWED_HOSTS configuration
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS = [RENDER_EXTERNAL_HOSTNAME, 'localhost', '127.0.0.1']
+else:
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
+    # Allow all hosts if ALLOWED_HOSTS is set to '*'
+    if '*' in ALLOWED_HOSTS:
+        ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -136,6 +140,10 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# CSRF Trusted Origins for Render
+if RENDER_EXTERNAL_HOSTNAME:
+    CSRF_TRUSTED_ORIGINS = [f'https://{RENDER_EXTERNAL_HOSTNAME}']
 
 # Security settings for production
 if not DEBUG:
