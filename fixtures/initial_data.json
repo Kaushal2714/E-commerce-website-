@@ -1,0 +1,166 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Electronics",
+      "slug": "electronics",
+      "description": "Latest electronic gadgets and devices"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Fashion",
+      "slug": "fashion",
+      "description": "Trendy clothing and accessories"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Sports",
+      "slug": "sports",
+      "description": "Sports equipment and gear"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 4,
+    "fields": {
+      "name": "Beauty",
+      "slug": "beauty",
+      "description": "Beauty and personal care products"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "Premium Laptop",
+      "slug": "premium-laptop",
+      "description": "High-performance laptop with latest processor and stunning display",
+      "price": "89999.00",
+      "image": "",
+      "stock": 15,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "Smartphone Pro",
+      "slug": "smartphone-pro",
+      "description": "Latest smartphone with amazing camera and long battery life",
+      "price": "79999.00",
+      "image": "",
+      "stock": 25,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "name": "Designer T-Shirt",
+      "slug": "designer-tshirt",
+      "description": "Premium quality cotton t-shirt with trendy design",
+      "price": "1999.00",
+      "image": "",
+      "stock": 50,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "category": 2,
+      "name": "Denim Jeans",
+      "slug": "denim-jeans",
+      "description": "Comfortable and stylish denim jeans for everyday wear",
+      "price": "2999.00",
+      "image": "",
+      "stock": 40,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "category": 3,
+      "name": "Cricket Bat",
+      "slug": "cricket-bat",
+      "description": "Professional cricket bat made from premium willow",
+      "price": "4999.00",
+      "image": "",
+      "stock": 20,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 6,
+    "fields": {
+      "category": 3,
+      "name": "Football",
+      "slug": "football",
+      "description": "High-quality football for professional matches",
+      "price": "1499.00",
+      "image": "",
+      "stock": 30,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+      "category": 4,
+      "name": "Face Wash",
+      "slug": "face-wash",
+      "description": "Gentle face wash for all skin types",
+      "price": "499.00",
+      "image": "",
+      "stock": 100,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 8,
+    "fields": {
+      "category": 1,
+      "name": "Wireless Headset",
+      "slug": "wireless-headset",
+      "description": "Premium wireless headset with noise cancellation",
+      "price": "5999.00",
+      "image": "",
+      "stock": 35,
+      "available": true,
+      "created_at": "2025-11-22T19:28:54.993Z",
+      "updated_at": "2025-11-22T19:28:54.993Z"
+    }
+  }
+]
