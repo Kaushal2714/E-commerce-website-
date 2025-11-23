@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: ecommerce-app
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn ecommerce_project.wsgi:application"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.0
+      - key: DEBUG
+        value: False
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: DB_ENGINE
+        value: django.db.backends.mysql
+      - key: DB_NAME
+        value: your_mysql_db_name
+      - key: DB_USER
+        value: your_mysql_username
+      - key: DB_PASSWORD
+        value: your_mysql_password
+      - key: DB_HOST
+        value: your_mysql_host
+      - key: DB_PORT
+        value: 3306
+      - key: RAZORPAY_KEY_ID
+        value: your_razorpay_key_id
+      - key: RAZORPAY_KEY_SECRET
+        value: your_razorpay_key_secret

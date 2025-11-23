@@ -221,7 +221,13 @@
 <div class="products-grid">
     {% for product in products %}
     <div class="product-card">
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+        {% else %}
+            <div class="product-image" style="display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #999;">
+                No Image Available
+            </div>
+        {% endif %}
         <div class="product-info">
             <h3 class="product-name">{{ product.name }}</h3>
             <p class="product-description">{{ product.description|truncatewords:15 }}</p>

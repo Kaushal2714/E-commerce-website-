@@ -174,7 +174,13 @@
     
     <div class="product-container">
         <div class="product-image-container">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image-large">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image-large">
+            {% else %}
+                <div class="product-image-large" style="display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #999; font-size: 1.2rem;">
+                    No Image Available
+                </div>
+            {% endif %}
         </div>
         
         <div class="product-details">
