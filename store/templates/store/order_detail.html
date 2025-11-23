@@ -28,8 +28,8 @@
 <div class="info-item"><div class="info-label">Status</div><div class="info-value"><span class="status-badge status-{{ order.status }}">{{ order.get_status_display }}</span></div></div>
 </div>
 <div><h3>Shipping Address</h3><p style="padding:1rem;background:#f8f9fa;border-radius:10px;margin:1rem 0">{{ order.shipping_address }}</p></div>
-<div class="order-items"><h3>Order Items</h3>{% for item in order.items.all %}<div class="order-item"><span>{{ item.product.name }} x {{ item.quantity }}</span><span>${{ item.get_subtotal }}</span></div>{% endfor %}</div>
-<div class="order-total">Total: ${{ order.total_amount }}</div>
+<div class="order-items"><h3>Order Items</h3>{% for item in order.items.all %}<div class="order-item"><span>{{ item.product.name }} x {{ item.quantity }}</span><span>₹{{ item.get_subtotal }}</span></div>{% endfor %}</div>
+<div class="order-total">Total: ₹{{ order.total_amount }}</div>
 <div style="text-align:center"><a href="{% url 'product_list' %}" class="back-btn">Continue Shopping</a></div>
 </div>
 {% endblock %}

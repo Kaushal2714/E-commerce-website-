@@ -189,10 +189,17 @@
 
 {% block content %}
 <div class="hero">
-    <h1>Welcome to TrendMart</h1>
-    <p>Discover amazing products at unbeatable prices</p>
+    {% if search_query %}
+        <h1>🔍 Search Results</h1>
+        <p>Showing results for "{{ search_query }}"</p>
+        <a href="{% url 'product_list' %}" style="display: inline-block; margin-top: 1rem; padding: 0.5rem 1.5rem; background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: 600;">Clear Search</a>
+    {% else %}
+        <h1>Welcome to TrendMart</h1>
+        <p>Discover amazing products at unbeatable prices</p>
+    {% endif %}
 </div>
 
+{% if not search_query %}
 <div class="categories">
     <a href="{% url 'product_list' %}" class="category-btn {% if not current_category %}active{% endif %}">
         All Products
@@ -204,8 +211,13 @@
     </a>
     {% endfor %}
 </div>
+{% endif %}
 
 {% if products %}
+<div style="margin-bottom: 1rem; text-align: center; color: white; font-weight: 600;">
+    Found {{ products.count }} product{{ products.count|pluralize }}
+    {% if search_query %}for "{{ search_query }}"{% endif %}
+</div>
 <div class="products-grid">
     {% for product in products %}
     <div class="product-card">
@@ -214,7 +226,7 @@
             <h3 class="product-name">{{ product.name }}</h3>
             <p class="product-description">{{ product.description|truncatewords:15 }}</p>
             <div class="product-footer">
-                <span class="product-price">${{ product.price }}</span>
+                <span class="product-price">₹{{ product.price }}</span>
                 <span class="stock-badge {% if product.stock > 10 %}in-stock{% else %}low-stock{% endif %}">
                     {% if product.stock > 10 %}In Stock{% else %}Only {{ product.stock }} left{% endif %}
                 </span>
@@ -234,8 +246,13 @@
 </div>
 {% else %}
 <div class="no-products">
-    <h2>No products found</h2>
-    <p>Check back later for new arrivals!</p>
+    <h2>😕 No products found</h2>
+    {% if search_query %}
+        <p>No results for "{{ search_query }}". Try a different search term.</p>
+        <a href="{% url 'product_list' %}" style="display: inline-block; margin-top: 1rem; padding: 0.8rem 2rem; background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%); color: white; text-decoration: none; border-radius: 25px; font-weight: 600;">Browse All Products</a>
+    {% else %}
+        <p>Check back later for new arrivals!</p>
+    {% endif %}
 </div>
 {% endif %}
 {% endblock %}

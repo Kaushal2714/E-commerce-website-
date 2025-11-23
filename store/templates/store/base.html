@@ -40,8 +40,54 @@
             font-weight: bold;
             background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             text-decoration: none;
+        }
+        
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 2rem;
+        }
+        
+        .search-form {
+            position: relative;
+            width: 100%;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 3rem 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: #ff6b35;
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+        
+        .search-button {
+            position: absolute;
+            right: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #ff9a56 0%, #ff6b35 100%);
+            border: none;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+        
+        .search-button:hover {
+            transform: translateY(-50%) scale(1.05);
         }
         
         .nav-links {
@@ -146,12 +192,28 @@
         }
         
         @media (max-width: 768px) {
+            .nav-container {
+                flex-wrap: wrap;
+            }
+            
+            .search-container {
+                order: 3;
+                width: 100%;
+                margin: 1rem 0 0 0;
+                max-width: 100%;
+            }
+            
             .nav-links {
                 gap: 1rem;
+                font-size: 0.9rem;
             }
             
             .container {
                 padding: 0 1rem;
+            }
+            
+            .logo {
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -161,11 +223,26 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="{% url 'product_list' %}" class="logo">🔥 TrendMart</a>
+            
+            <div class="search-container">
+                <form method="get" action="{% url 'product_list' %}" class="search-form">
+                    <input 
+                        type="text" 
+                        name="search" 
+                        class="search-input" 
+                        placeholder="Search products, categories..." 
+                        value="{{ search_query|default:'' }}"
+                    >
+                    <button type="submit" class="search-button">🔍 Search</button>
+                </form>
+            </div>
+            
             <ul class="nav-links">
                 <li><a href="{% url 'product_list' %}">Products</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'order_list' %}">My Orders</a></li>
                     <li><a href="{% url 'cart_detail' %}" class="cart-icon">🛒 Cart</a></li>
+                    <li style="color: #ff6b35; font-weight: 600;">👤 {{ user.first_name|default:user.username }}</li>
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}
                     <li><a href="{% url 'login' %}">Login</a></li>

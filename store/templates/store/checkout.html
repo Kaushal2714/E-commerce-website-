@@ -86,6 +86,19 @@
         transform: translateY(-3px);
         box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
     }
+    
+    .payment-option:has(input:checked) {
+        border-color: #ff6b35 !important;
+        background: #fff5f2;
+    }
+    
+    .form-control:invalid:not(:placeholder-shown) {
+        border-color: #ef4444;
+    }
+    
+    .form-control:valid:not(:placeholder-shown) {
+        border-color: #10b981;
+    }
 </style>
 {% endblock %}
 
@@ -98,26 +111,255 @@
         {% for item in cart.items.all %}
         <div class="order-item">
             <span>{{ item.product.name }} x {{ item.quantity }}</span>
-            <span>${{ item.get_subtotal }}</span>
+            <span>₹{{ item.get_subtotal }}</span>
         </div>
         {% endfor %}
         <div class="order-total">
             <div style="display: flex; justify-content: space-between;">
                 <span>Total:</span>
-                <span>${{ cart.get_total }}</span>
+                <span>₹{{ cart.get_total }}</span>
             </div>
         </div>
     </div>
     
-    <form method="post">
+    <form method="post" id="checkout-form">
         {% csrf_token %}
+        
+        <h3 style="margin-bottom: 1.5rem; color: #333;">📍 Delivery Address</h3>
+        
+        {% if saved_addresses %}
         <div class="form-group">
-            <label class="form-label">Shipping Address</label>
-            <textarea name="shipping_address" class="form-control" rows="4" required 
-                      placeholder="Enter your complete shipping address"></textarea>
+            <label class="form-label">Select Saved Address</label>
+            <select id="saved-address-select" class="form-control" style="margin-bottom: 1rem;">
+                <option value="">-- Enter New Address --</option>
+                {% for addr in saved_addresses %}
+                <option value="{{ addr.id }}" 
+                        data-name="{{ addr.full_name }}"
+                        data-phone="{{ addr.phone }}"
+                        data-address1="{{ addr.address_line1 }}"
+                        data-address2="{{ addr.address_line2 }}"
+                        data-city="{{ addr.city }}"
+                        data-state="{{ addr.state }}"
+                        data-pincode="{{ addr.pincode }}">
+                    {{ addr.full_name }} - {{ addr.city }}, {{ addr.state }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label class="form-label">Full Name *</label>
+                <input type="text" name="full_name" id="full_name" class="form-control" required 
+                       placeholder="Enter your full name" value="{{ user.get_full_name }}">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Phone Number *</label>
+                <input type="tel" name="phone" id="phone" class="form-control" required 
+                       placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10">
+            </div>
         </div>
         
-        <button type="submit" class="submit-btn">Place Order</button>
+        <div class="form-group">
+            <label class="form-label">Address Line 1 *</label>
+            <input type="text" name="address_line1" id="address_line1" class="form-control" required 
+                   placeholder="House No., Building Name, Street">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Address Line 2 (Optional)</label>
+            <input type="text" name="address_line2" id="address_line2" class="form-control" 
+                   placeholder="Landmark, Area">
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+                <label class="form-label">City *</label>
+                <input type="text" name="city" id="city" class="form-control" required 
+                       placeholder="City">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">State *</label>
+                <select name="state" id="state" class="form-control" required>
+                    <option value="">Select State</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Arunachal Pradesh">Arunachal Pradesh</option>
+                    <option value="Assam">Assam</option>
+                    <option value="Bihar">Bihar</option>
+                    <option value="Chhattisgarh">Chhattisgarh</option>
+                    <option value="Goa">Goa</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Haryana">Haryana</option>
+                    <option value="Himachal Pradesh">Himachal Pradesh</option>
+                    <option value="Jharkhand">Jharkhand</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Madhya Pradesh">Madhya Pradesh</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Manipur">Manipur</option>
+                    <option value="Meghalaya">Meghalaya</option>
+                    <option value="Mizoram">Mizoram</option>
+                    <option value="Nagaland">Nagaland</option>
+                    <option value="Odisha">Odisha</option>
+                    <option value="Punjab">Punjab</option>
+                    <option value="Rajasthan">Rajasthan</option>
+                    <option value="Sikkim">Sikkim</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Tripura">Tripura</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="Uttarakhand">Uttarakhand</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Delhi">Delhi</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">Pincode *</label>
+                <input type="text" name="pincode" id="pincode" class="form-control" required 
+                       placeholder="6-digit pincode" pattern="[0-9]{6}" maxlength="6">
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                <input type="checkbox" name="save_address" value="1">
+                <span>💾 Save this address for future orders</span>
+            </label>
+        </div>
+        
+        <hr style="margin: 2rem 0; border: none; border-top: 2px solid #f0f0f0;">
+        
+        <h3 style="margin-bottom: 1.5rem; color: #333;">💳 Payment Method</h3>
+        
+        <div class="form-group">
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.3s;" class="payment-option">
+                    <input type="radio" name="payment_method" value="razorpay" checked>
+                    <span style="flex: 1;">
+                        <strong>💳 Pay Online</strong><br>
+                        <small style="color: #666;">Credit/Debit Card, UPI, Net Banking, Wallets</small>
+                    </span>
+                </label>
+                <label style="display: flex; align-items: center; gap: 0.5rem; padding: 1rem; border: 2px solid #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.3s;" class="payment-option">
+                    <input type="radio" name="payment_method" value="cod">
+                    <span style="flex: 1;">
+                        <strong>💵 Cash on Delivery</strong><br>
+                        <small style="color: #666;">Pay when you receive the product</small>
+                    </span>
+                </label>
+            </div>
+        </div>
+        
+        <button type="submit" class="submit-btn" id="place-order-btn">
+            <span id="btn-text">Proceed to Payment</span>
+        </button>
     </form>
 </div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+// Load saved address
+const savedAddressSelect = document.getElementById('saved-address-select');
+if (savedAddressSelect) {
+    savedAddressSelect.addEventListener('change', function() {
+        const selectedOption = this.options[this.selectedIndex];
+        if (this.value) {
+            document.getElementById('full_name').value = selectedOption.dataset.name || '';
+            document.getElementById('phone').value = selectedOption.dataset.phone || '';
+            document.getElementById('address_line1').value = selectedOption.dataset.address1 || '';
+            document.getElementById('address_line2').value = selectedOption.dataset.address2 || '';
+            document.getElementById('city').value = selectedOption.dataset.city || '';
+            document.getElementById('state').value = selectedOption.dataset.state || '';
+            document.getElementById('pincode').value = selectedOption.dataset.pincode || '';
+        } else {
+            // Clear form
+            document.getElementById('full_name').value = '{{ user.get_full_name }}';
+            document.getElementById('phone').value = '';
+            document.getElementById('address_line1').value = '';
+            document.getElementById('address_line2').value = '';
+            document.getElementById('city').value = '';
+            document.getElementById('state').value = '';
+            document.getElementById('pincode').value = '';
+        }
+    });
+}
+
+// Form submission
+document.getElementById('checkout-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+    const fullName = document.getElementById('full_name').value;
+    const phone = document.getElementById('phone').value;
+    
+    if (!fullName.trim() || !phone.trim()) {
+        alert('Please fill all required fields');
+        return;
+    }
+    
+    if (paymentMethod === 'cod') {
+        // Submit form for COD
+        this.submit();
+    } else {
+        // Razorpay payment
+        const options = {
+            "key": "{{ razorpay_key_id }}",
+            "amount": "{{ cart_total_paise }}",
+            "currency": "INR",
+            "name": "TrendMart",
+            "description": "Order Payment",
+            "image": "https://your-logo-url.com/logo.png",
+            "handler": function (response){
+                // Add payment ID to form and submit
+                const form = document.getElementById('checkout-form');
+                const paymentInput = document.createElement('input');
+                paymentInput.type = 'hidden';
+                paymentInput.name = 'razorpay_payment_id';
+                paymentInput.value = response.razorpay_payment_id;
+                form.appendChild(paymentInput);
+                form.submit();
+            },
+            "prefill": {
+                "name": fullName,
+                "email": "{{ user.email }}",
+                "contact": phone
+            },
+            "theme": {
+                "color": "#ff6b35"
+            }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+    }
+});
+
+// Update button text based on payment method
+document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+    radio.addEventListener('change', function() {
+        const btnText = document.getElementById('btn-text');
+        if (this.value === 'cod') {
+            btnText.textContent = 'Place Order (COD)';
+        } else {
+            btnText.textContent = 'Proceed to Payment';
+        }
+    });
+});
+
+// Phone number validation
+document.getElementById('phone').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+
+// Pincode validation
+document.getElementById('pincode').addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+});
+</script>
 {% endblock %}

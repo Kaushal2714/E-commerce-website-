@@ -237,7 +237,7 @@
             
             <div class="cart-item-details">
                 <h3>{{ item.product.name }}</h3>
-                <p class="cart-item-price">${{ item.product.price }} each</p>
+                <p class="cart-item-price">₹{{ item.product.price }} each</p>
                 
                 <form method="post" action="{% url 'update_cart' item.id %}" class="quantity-controls">
                     {% csrf_token %}
@@ -249,7 +249,7 @@
             </div>
             
             <div class="cart-item-actions">
-                <div class="item-subtotal">${{ item.get_subtotal }}</div>
+                <div class="item-subtotal">₹{{ item.get_subtotal }}</div>
                 <form method="post" action="{% url 'remove_from_cart' item.id %}">
                     {% csrf_token %}
                     <button type="submit" class="remove-btn">Remove</button>
@@ -264,7 +264,7 @@
         
         <div class="summary-row">
             <span>Subtotal</span>
-            <span>${{ cart.get_total }}</span>
+            <span>₹{{ cart.get_total }}</span>
         </div>
         
         <div class="summary-row">
@@ -274,7 +274,7 @@
         
         <div class="summary-row summary-total">
             <span>Total</span>
-            <span class="amount">${{ cart.get_total }}</span>
+            <span class="amount">₹{{ cart.get_total }}</span>
         </div>
         
         <a href="{% url 'checkout' %}" class="checkout-btn">Proceed to Checkout</a>
